@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AddIcon from '@mui/icons-material/Add';
-import { Campaign, SubCampaign } from '../interface';
+import { Ads, Campaign, Information, SubCampaign } from '../interface';
 import InformationTab from './InformationTab';
 import SubCampaignTab from './SubCampaign';
 
@@ -23,6 +23,8 @@ interface TabPanelProps {
 
 function CustomTabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
+
+
 
     return (
         <div
@@ -50,6 +52,9 @@ function a11yProps(index: number) {
 
 const CampaignContainer = () => {
     const [value, setValue] = useState(0);
+    const [isSubmit, setIsSubmit] = useState<boolean>(false)
+    const [checkValidNameInfor, setCheckValidNameInfor] = useState<boolean>(true)
+    const [checkValidSubCampaign, setCheckValidSubCampaign] = useState<boolean>(true)
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -101,10 +106,55 @@ const CampaignContainer = () => {
         });
     }
 
+    const handleChangeInfor = (newInformation: Information) => {
+        if (newInformation.name) {
+            setCheckValidNameInfor(true)
+        }
+        setCampaign({
+            ...campaign,
+            information: newInformation
+        });
+    }
+
+    const handleSubmit = () => {
+        setIsSubmit(true)
+        let setCheckValidSub: boolean = true
+        campaign.subCampaigns.map((item, index) => {
+            item.ads.map((it, idx) => {
+                if (it.name === "" || it.quantity <= 0) {
+                    setCheckValidSub = false;
+                    return;
+                }
+            })
+        })
+        if (!campaign.information.name) {
+            setCheckValidNameInfor(false)
+            alert("Vui lòng điền đúng và đầy đủ thông tin")
+        }
+        else if (!setCheckValidSub) {
+            alert("Vui lòng điền đúng và đầy đủ thông tin")
+        }
+        else {
+            let lastCampaign = { campaign: { ...campaign } }
+            alert(`Thêm thành công chiến dịch \n${JSON.stringify(lastCampaign)}`)
+        }
+
+
+
+
+
+    }
+
     return (
         <div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "right" }}>
-                <Button sx={{ margin: "10px", alignItems: "right" }} variant="contained">Submit</Button>
+                <Button
+                    sx={{ margin: "10px", alignItems: "right" }}
+                    variant="contained"
+                    onClick={() => handleSubmit()}
+                >
+                    Submit
+                </Button>
             </div>
 
             <Box sx={{ margin: "0px 10px", border: "1px solid gray" }}>
@@ -115,10 +165,15 @@ const CampaignContainer = () => {
                     </Tabs>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
-                    <InformationTab />
+                    <InformationTab
+                        campaign={campaign}
+                        checkValidNameInfor={checkValidNameInfor}
+                        handleChangeInfor={handleChangeInfor}
+                    />
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
                     <SubCampaignTab
+                        isSubmit={isSubmit}
                         campaign={campaign}
                         handleAddSubCampaign={handleAddSubCampaign}
                         handleUpdateSubCampaign={handleUpdateSubCampaign}

@@ -3,6 +3,11 @@ export interface Ads {
     quantity: number;
 }
 
+export interface Information {
+    name: string;
+    describe?: string;
+}
+
 export interface SubCampaign {
     name: string;
     status: boolean;
@@ -10,9 +15,6 @@ export interface SubCampaign {
 }
 
 export interface Campaign {
-    information: {
-        name: string;
-        describe?: string;
-    };
+    information: Information;
     subCampaigns: SubCampaign[];
 }

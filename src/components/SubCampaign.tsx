@@ -12,17 +12,20 @@ import CheckCircle from '@mui/icons-material/CheckCircle';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Campaign, SubCampaign } from "../interface";
+import Tooltip from '@mui/material/Tooltip';
+import { Ads, Campaign, SubCampaign } from "../interface";
 
 
 interface Props {
     campaign: Campaign,
     handleAddSubCampaign: () => void,
     handleUpdateSubCampaign: (newSubCampaign: SubCampaign, index: number) => void,
+    isSubmit: boolean,
 }
 
+
 const SubCampaignTab: React.FC<Props> = (props) => {
-    const { campaign, handleAddSubCampaign, handleUpdateSubCampaign } = props
+    const { campaign, handleAddSubCampaign, handleUpdateSubCampaign, isSubmit } = props
     const { information, subCampaigns } = campaign
 
     const [checkActive, setCheckActive] = useState<SubCampaign>({ ...subCampaigns[0] })
@@ -30,12 +33,15 @@ const SubCampaignTab: React.FC<Props> = (props) => {
 
     console.log("checkActive: ", checkActive);
 
+    const handleDeleteManySub = () => {
+        console.log("delete checkActive: ", checkActive);
 
+    }
 
     return (
         <Box>
             <Stack direction="column" spacing={2}>
-                <Stack direction="row">
+                <Stack direction="row" overflow="auto">
                     <IconButton sx={{
                         backgroundColor: "rgb(237, 237, 237)",
                         width: "48px",
@@ -47,10 +53,21 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                     </IconButton>
 
                     {subCampaigns.map((item, index) => {
+                        let totalQuantity: number = item.ads.reduce((total, it) => {
+                            return total + it.quantity;
+                        }, 0)
+
+                        let checkQuantityAds = item.ads.filter((it, idx) => {
+                            return it.quantity <= 0;
+                        })
+                        let checkNameAds = item.ads.filter((it, idx) => {
+                            return it.name === "";
+                        })
+
                         return (
                             <Paper
                                 sx={{
-                                    width: "210px",
+                                    minWidth: "210px",
                                     height: "120px",
                                     marginLeft: "16px",
                                     cursor: "pointer",
@@ -62,7 +79,7 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                 }}
                             >
                                 <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" padding="8px 0px">
-                                    <div style={{ fontSize: "1.25rem", fontWeight: 500 }}>{item.name}</div>
+                                    <div style={{ fontSize: "1.25rem", fontWeight: 500, color: isSubmit && (checkQuantityAds.length !== 0 || checkNameAds.length !== 0) ? "red" : "black" }}>{item.name}</div>
                                     <CheckCircle
                                         sx={{
                                             color: item.status ? "rgb(0, 128, 0)" : "rgb(141, 141, 141)",
@@ -72,7 +89,9 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                 </Stack>
 
 
-                                <div style={{ fontSize: "1.55rem", fontWeight: 500 }}>0</div>
+                                <div style={{ fontSize: "1.55rem", fontWeight: 500 }}>{
+                                    totalQuantity
+                                }</div>
                             </Paper>
                         )
                     })}
@@ -128,6 +147,8 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                             </td>
                         </tr>
                         {checkActive.ads.map((item, index) => {
+                            let checkQuantity = item.quantity > 0 ? true : false;
+                            let checkName = item.name ? true : false;
                             return (
                                 <tr style={{ borderBottom: "2px solid rgba(224, 224, 224, 1)" }}>
                                     <td style={{ textAlign: "left", width: "50px" }}>
@@ -137,6 +158,7 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                         <TextField
                                             sx={{ width: "90%" }}
                                             required id="standard-required"
+                                            error={checkName ? false : true}
                                             variant="standard"
                                             value={item.name}
                                             onChange={(e) => {
@@ -155,6 +177,7 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                             required id="standard-required"
                                             variant="standard"
                                             type="number"
+                                            error={checkQuantity ? false : true}
                                             value={item.quantity}
                                             onChange={(e) => {
                                                 const newItem = { ...item, quantity: +e.target.value }
@@ -166,20 +189,23 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                         />
                                     </td>
                                     <td style={{ textAlign: "right" }}>
-                                        <IconButton
-                                            sx={{
-                                                width: "1.5rem",
-                                                height: "1.5rem",
-                                            }}
-                                            onClick={() => {
-                                                const cloneAds = [...checkActive.ads]
-                                                cloneAds.splice(index, 1)
-                                                setCheckActive({ ...checkActive, ads: cloneAds })
-                                                handleUpdateSubCampaign({ ...checkActive, ads: cloneAds }, checkIdActive)
-                                            }}
-                                        >
-                                            <Delete sx={{ color: "#0000008a", }} />
-                                        </IconButton>
+                                        <Tooltip title="Xoá">
+                                            <IconButton
+                                                sx={{
+                                                    width: "1.5rem",
+                                                    height: "1.5rem",
+                                                }}
+                                                onClick={() => {
+                                                    const cloneAds = [...checkActive.ads]
+                                                    cloneAds.splice(index, 1)
+                                                    setCheckActive({ ...checkActive, ads: cloneAds })
+                                                    handleUpdateSubCampaign({ ...checkActive, ads: cloneAds }, checkIdActive)
+                                                }}
+                                            >
+                                                <Delete sx={{ color: "#0000008a", }} />
+                                            </IconButton>
+                                        </Tooltip>
+
                                     </td>
                                 </tr>
                             )
