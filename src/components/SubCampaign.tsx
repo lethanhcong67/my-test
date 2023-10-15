@@ -106,6 +106,7 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                         return false;
                                     }))
                                     setCheckIdActive(index)
+                                    setSelectAds("no")
                                 }}
                             >
                                 <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" padding="8px 0px">
@@ -228,7 +229,11 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                         <TableRow
                                             hover
                                             key={index}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            sx={{
+                                                '&:last-child td, &:last-child th': { border: 0 },
+                                                backgroundColor: listSelectAds[index] === true ? "rgb(254 235 242)" : "#ffffff"
+                                            }}
+
                                         >
                                             <TableCell component="th" scope="row">
                                                 <Checkbox
@@ -252,7 +257,6 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                             </TableCell>
                                             <TableCell align="left">
                                                 <TextField
-                                                    disabled={selectAds !== "no" ? true : false}
                                                     sx={{ width: "90%" }}
                                                     required id="standard-required"
                                                     error={checkName ? false : true}
@@ -273,7 +277,6 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                             </TableCell>
                                             <TableCell align="left">
                                                 <TextField
-                                                    disabled={selectAds !== "no" ? true : false}
                                                     sx={{ width: "90%" }}
                                                     required id="standard-required"
                                                     variant="standard"
@@ -310,7 +313,7 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                                             handleUpdateSubCampaign({ ...checkActive, ads: cloneAds }, checkIdActive)
                                                         }}
                                                     >
-                                                        <Delete sx={{ color: "#0000008a", }} />
+                                                        <Delete sx={{ color: selectAds !== "no" ? "#bcaeb3" : "#0000008a", }} />
                                                     </IconButton>
                                                 </Tooltip>
                                             </TableCell>
