@@ -156,11 +156,11 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                 </Stack>
                 <Stack direction="column">
                     <div style={{ fontSize: "1.25rem", fontWeight: 500, textAlign: "left" }} >DANH SÁCH QUẢNG CÁO</div>
-                    <TableContainer component={Paper}>
+                    <TableContainer >
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
                                 <TableRow sx={{ fontSize: "1rem" }}>
-                                    <TableCell sx={{ fontSize: "1rem", width: 50 }}>
+                                    <TableCell sx={{ fontSize: "1rem", width: 50 }} align="left">
                                         <Checkbox
                                             indeterminate={selectAds === "yes" ? true : false}
                                             indeterminateIcon={<IndeterminateCheckBoxIcon sx={{ color: "#0000008a" }} />}
@@ -235,7 +235,7 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                             }}
 
                                         >
-                                            <TableCell component="th" scope="row">
+                                            <TableCell component="th" scope="row" align="left">
                                                 <Checkbox
                                                     checked={listSelectAds[index]}
                                                     onChange={(e) => {

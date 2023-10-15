@@ -149,15 +149,16 @@ const CampaignContainer = () => {
         <div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "right" }}>
                 <Button
-                    sx={{ margin: "10px", alignItems: "right" }}
+                    sx={{ margin: "30px 10px 5px 10px", alignItems: "right" }}
                     variant="contained"
                     onClick={() => handleSubmit()}
                 >
                     Submit
                 </Button>
             </div>
+            <hr />
 
-            <Box sx={{ margin: "0px 10px", border: "1px solid gray" }}>
+            <Box sx={{ margin: "30px 20px 0px 20px", boxShadow: "0px 1px 1px 1px #ececec", borderRadius: "5px" }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Thông tin" {...a11yProps(0)} />
