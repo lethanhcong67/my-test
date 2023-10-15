@@ -149,7 +149,7 @@ const CampaignContainer = () => {
         <div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "right" }}>
                 <Button
-                    sx={{ margin: "30px 10px 5px 10px", alignItems: "right" }}
+                    sx={{ margin: "30px 20px 5px 10px", alignItems: "right" }}
                     variant="contained"
                     onClick={() => handleSubmit()}
                 >
