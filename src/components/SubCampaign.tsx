@@ -94,7 +94,7 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                         return (
                             <Paper
                                 sx={{
-                                    width: "210px",
+                                    minWidth: "210px",
                                     height: "120px",
                                     marginLeft: "16px",
                                     cursor: "pointer",
