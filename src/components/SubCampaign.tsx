@@ -110,22 +110,17 @@ const SubCampaignTab: React.FC<Props> = (props) => {
                                 }}
                             >
                                 <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" padding="8px 0px">
+
                                     <div style={{
                                         fontSize: "1.25rem",
                                         fontWeight: 500,
-                                        width: "180px",
-                                        height: "60px",
-                                        wordWrap: "normal",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        whiteSpace: "normal",
-                                        padding: "0px 10px",
                                         color: isSubmit && (checkQuantityAds.length !== 0 || checkNameAds.length !== 0) ? "red" : "black"
                                     }}>{item.name}</div>
                                     <CheckCircle
                                         sx={{
                                             color: item.status ? "rgb(0, 128, 0)" : "rgb(141, 141, 141)",
-                                            fontSize: "14px"
+                                            fontSize: "14px",
+
                                         }}
                                     />
                                 </Stack>
